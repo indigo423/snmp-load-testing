@@ -67,13 +67,13 @@ func main() {
 
 	// Record the start time to measure performance.
 	startTime := time.Now()
-	var sleep = uint(1000) / *rate
+	var sleep = uint(1000000) / *rate
 
 	for i := uint(1); i <= *count; i++ {
 		// Send the trap to the configured target.
 		// The SendTrap method handles the encoding and network transmission.
 		_, err = snmp.SendTrap(trapPDU)
-		time.Sleep(time.Duration(sleep) * time.Millisecond)
+		time.Sleep(time.Duration(sleep) * time.Microsecond)
 		if err != nil {
 			// Log a non-fatal error to continue sending other traps.
 			log.Printf("SendTrap() failed for iteration %d: %v", i, err)
