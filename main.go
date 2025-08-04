@@ -31,9 +31,7 @@ func main() {
 		Community: *community,
 		Version:   gosnmp.Version2c,
 		Timeout:   time.Duration(2) * time.Second,
-		Retries:   3,
-		// Log a fatal error if the connection fails.
-		Logger: gosnmp.NewLogger(log.New(log.Writer(), "", 0)),
+		Retries:   0,
 	}
 
 	// Connect to the target SNMP agent.
@@ -80,11 +78,10 @@ func main() {
 			// Log a non-fatal error to continue sending other traps.
 			log.Printf("SendTrap() failed for iteration %d: %v", i, err)
 		}
-		log.Printf("Wait: %d", time.Duration(sleep))
 	}
 
 	// Calculate the duration.
 	duration := time.Since(startTime)
 
-	fmt.Printf("Finished sending %d traps in %s to %s:%d using community %s\n", *count, duration, *target, *port, *community)
+	fmt.Printf("Finished sending %d traps with %d traps per second in %s to %s:%d using community %s\n", *count, *rate, duration, *target, *port, *community)
 }
