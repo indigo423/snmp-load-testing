@@ -13,6 +13,7 @@ func main() {
 	// Define command-line flags with default values.
 	// These allow you to specify the target, port, and community from the command line.
 	target := flag.String("target", "127.0.0.1", "The IP address or hostname of the SNMP trap receiver.")
+	sourceIp := flag.String("source-ip", "127.0.0.1", "The source IP address to include in the SNMP trap's AgentAddress field.")
 	port := flag.Uint("port", 162, "The port number of the SNMP trap receiver.")
 	community := flag.String("community", "public", "The SNMP community string.")
 	count := flag.Uint("count", 1, "The number of SNMP Traps to send.")
@@ -54,7 +55,7 @@ func main() {
 		// In V2c, the trap type is defined by the SnmpTrapOID.0 variable binding.
 		// The `Enterprise` field is not required for V2c. We set it to a placeholder value.
 		Enterprise:   coldStartTrapOID,
-		AgentAddress: "127.0.0.1",
+		AgentAddress: *sourceIp,
 		Variables: []gosnmp.SnmpPDU{
 			{
 				Name:  ".1.3.6.1.6.3.1.1.4.1.0", // This is the SnmpTrapOID.0 OID
